@@ -1,0 +1,52 @@
+<%- include ('custheader') %>
+
+
+<div class="apptable">
+    <h1>Appointments</h1>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Service</th>
+          <th scope="col">StartTime</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Status</th>
+          <th scope="col">Cancel</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<tables.length ; i++){  %>
+          <tr>
+            <th scope="row"><%= i+1 %></th>
+            <td>
+                <%= tables[i].custName %>
+            </td>
+            <td>
+                <%= tables[i].mobNumber %>
+            </td>
+            <td>
+                <%= tables[i].serviceName %>
+            </td>
+            <td>
+                <%= tables[i].startTime %>
+            </td>
+            <td>
+                <%= tables[i].price %>
+            </td>
+            <td>
+                <%= tables[i].isPaid %>
+            </td>
+            <td>
+              <a href="deleteAppointment/<%=tables[i].appointmentId%>" ><i class="fa-solid fa-xmark"></i></a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+      
+    </table>
+  </div>
+
+
+<%- include ('footer') %>

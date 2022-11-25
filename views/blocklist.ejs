@@ -1,0 +1,66 @@
+<%- include ('custheader') %>
+<div class="apptable">
+    <h1>Blocked Users</h1>
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Number</th>
+          <th scope="col">Reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<tables.length ; i++){  %>
+          <tr>
+            <th scope="row">
+              <%= i+1 %>
+            </th>
+            <td>
+              <div class="row_data" edit_type="click" col_name="number">
+                <%= tables[i].mobNumber %>
+              </div>
+            </td>
+            <td>
+              <div class="row_data" edit_type="click" col_name="reason">
+                <%= tables[i].reason %>
+              </div>
+            </td>
+            <td>
+              <span class="btn_unblock" > <a class="btn btn-link " row_id="<%=tables[i].itemId%>" > <i class="fa-solid fa-trash"></i></a> </span>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+
+$(document).on('click', '.btn_unblock', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+    //make the whole row editable
+    tbl_row.hide();
+    var arr = {}; 
+   
+    tbl_row.find('.row_data').each(function(index, val) 
+    {   
+        var col_name = $(this).attr('col_name');  
+        var col_val  =  $(this).html().trim();
+        arr[col_name] = col_val;
+    });
+    $.post("/unblock",{arr:arr},function(res){
+      if(res=='done'){
+        alert("Unblocked!!");
+        location.reload()
+      }
+      else{
+        alert("Error!!");
+      }
+    });
+    
+  });
+  </script>
+<%- include ('footer') %>

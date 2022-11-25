@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barber Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    
+</head>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+}
+
+#banner {
+    background: linear-gradient(rgba(0,0,0,0.5),grey),url(Barber_Shop_img/banner.jpg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.logo {
+    width: 140px;
+    position: absolute;
+    top: 4%;
+    left: 10%;
+}
+
+.banner-text {
+    text-align: center;
+    color:#fff;
+    padding-top: 180px;
+
+}
+
+.banner-text h1 {
+    font-size: 130px;
+}
+
+.banner-text p {
+    font-size: 20px;
+    font-style: italic;
+}
+
+.banner-btn {
+    margin: 70px auto 0;
+}
+
+.banner-btn a {
+    width: 150px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0 10px;
+    padding: 12px 0;
+    color: #fff;
+    border: .5px solid #fff;
+    position: relative;
+    z-index: 1;
+    transition: color 0.5s;
+}
+
+.banner-btn a span {
+    width: 0;
+    height:100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #fff;
+    z-index: -1;
+    transition: 0.5s;
+}
+
+.banner-btn a:hover span {
+    width: 100%;
+}
+
+.banner-btn a:hover {
+    color: #000
+}
+
+#sideNav {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    right: -250px;
+    top: 0;
+    background: grey;
+    z-index: 2;
+    transition: 0.5s;
+}
+
+nav ul li {
+    list-style: none;
+    margin: 50px 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;  
+}
+
+#manuBtn {
+    width: 50px;
+    height: 50px;
+    background: grey;
+    text-align: center;
+    position: fixed;
+    right: 30px;
+    top: 20px;
+    border-radius: 3px;
+    z-index: 3;
+    cursor: pointer;
+}
+
+#manuBtn img {
+    width: 20px;
+    margin-top: 15px;
+} 
+
+@media screen and (max-width:770px){
+    .banner-text h1{
+        font-size: 44px;
+    }   
+    .banner-btn a {
+        display: auto;
+        margin: 20px auto;
+    }
+}
+
+/* features */
+
+#feature {
+    width: 100%;
+    padding: 70px 0;
+}
+
+.title-text {
+    text-align: center;
+    padding-bottom: 70px;
+}
+
+.title-text p {
+    margin: auto;
+    font-size: 20px;
+    color: grey;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+}
+
+.title-text p::after{
+    content: '';
+    width: 50px;
+    height: 35px;
+    background: linear-gradient(grey,#fff);
+    position: absolute;
+    top: -20px;
+    left: 0;
+    z-index: -1;
+    transform: rotate(10deg);
+    border-top-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+}
+
+.title-text h1 {
+    font-size: 50px;
+}
+
+.feature-box {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    text-align: center;
+}
+
+.features {
+    flex-basis: 50%;
+
+}
+
+.features-img {
+    flex-basis: 50%;
+    margin: auto;
+    
+}
+
+
+.features-img img {
+    width: 70%;
+    border-radius: 10px;   
+    
+}
+
+.features h1 {
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: 100px;
+    color: grey;
+}
+
+.features-desc {
+    display: flex;
+   align-items: center;
+   margin-bottom: 40px;
+}
+
+.feature-icon .fa{
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    line-height: 50px;
+    border-radius: 8px;
+    color: grey;
+    border: 1px solid grey
+
+}
+
+.feature-text p {
+    padding: 0 20px;
+    text-align: initial;
+}
+
+@media screen and (max-width:770px) {
+    .title-text h1 {
+        font-size: 35px;
+    }
+    .features {
+        flex-basis: 100%;
+    }
+    .features-img {
+        flex-basis: 100%;
+        margin: auto;
+    }
+    .features-img img {
+        width: 100%;
+    }
+}
+
+/* Service */
+
+#service {
+    width: 100%;
+    padding: 70px 0;
+    background: #efefef
+}
+
+.service-box {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: auto;
+}
+
+.single-service {
+    flex-basis: 48%;
+    text-align: center;
+    border-radius: 7px;
+    margin-bottom: 20px;
+    color:#fff;
+    position: relative;
+}
+
+.single-service img {
+    width: 100%;
+    border-radius: 7px;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    border-radius: 7px;
+    cursor: pointer;
+    background: linear-gradient(rgba(0,0,0,0.5),grey);
+     opacity: 0; 
+     transition: 1s; 
+}
+
+.single-service:hover .overlay{
+    opacity: 1;
+}
+
+.service-desc {
+    width: 80%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    opacity: 0;
+    transform: translate(-50%);
+    transition: 1s;
+}
+
+hr {
+    background: #fff;
+    height: 2px;
+    border: 0;
+    margin: 15px auto;
+    width: 60%;
+}
+
+.service-desc p {
+    font-size: 14px;
+}
+
+.single-service:hover .service-desc{
+    bottom: 40%;
+    opacity: 1;
+}
+
+@media screen and (max-width: 770px) {
+    .single-service {
+        flex-basis: 100%;
+        margin-bottom: 30px;
+    }
+    .service-desc p {
+        font-size: 12px;
+    }
+    hr {
+        margin: 5px auto;
+    }
+    .single-service:hover .service-desc {
+        bottom: 25% !important;
+    }
+}
+
+/* testimonial */
+#testimonial {
+    width: 100%;
+    padding: 70px 0;
+}
+
+.testimonial-row {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.testimonial-col {
+    flex-basis: 28%;
+    padding: 10px;
+    margin-bottom: 30px;
+    border-radius: 5 px;
+    box-shadow: 0 10px 20px 3px grey14;
+    cursor: pointer;
+    transition: transform .5s;
+}
+
+.testimonial-col p {
+    font-size: 14px;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.user img {
+    width: 40px;
+    margin-right: 20px;
+    border-radius: 3px;
+}
+
+.user-info .fa {
+    margin-left: 10px;
+    color:#27c0ff;
+    font-size: 20px;
+}
+
+.user-info small {
+    color: grey;
+}
+
+.testimonial-col:hover {
+    transform: translateY(7px);
+}
+
+@media screen and (max-width: 770px) {
+    .testimonial-col {
+        flex-basis: 100%;
+    }
+}
+
+
+/* footer */
+
+#footer {
+    padding: 100px 0 20px;
+    background: #efefef;
+    position: relative;
+    
+}
+
+.footer-row {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-left, .footer-right {
+    flex-basis: 45%;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.footer-row h1 {
+    margin: 10px 0; 
+}
+
+.footer-row p {
+    line-height: 35px;
+}
+
+.footer-left .fa, .footer-right .fa {
+    font-size: 20px;
+    color: grey;
+}
+
+.footer-img {
+    max-width: 370px;
+    opacity: 0.1;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%,-50%);
+}
+
+.social-links {
+    text-align: center;
+}
+
+.social-links .fa {
+    height: 40 px;
+    width: 40px;
+    font-size: 20px;
+    line-height: 40px;
+    border: 1px solid grey;
+    margin:c 40px 5px 0;
+    color: grey;
+    cursor: pointer;
+}
+
+.social-links .fa-facebook:hover {
+    background: white;
+    color: #4267B2;
+    transform:translateY(-7px);
+}
+
+.social-links .fa-instagram:hover {
+    background: white;
+    color: #E1306C;
+    transform:translateY(-7px);
+}
+.social-links .fa-twitter:hover {
+    background: white;
+    color: skyblue;
+    transform:translateY(-7px);
+}
+.social-links .fa-youtube-play:hover {
+    background: white;
+    color: red;
+    transform:translateY(-7px);
+}
+
+.social-links p {
+    font-size: 12px;
+    margin-top: 20px;
+
+
+}
+</style>
+<body>
+    <section id="banner">
+        <img src="Barber_Shop_img/logo.png" class="logo">
+        <div class="banner-text">
+            <h1>Hair Studio</h1>
+            <p>Style Your Hair Is Style Your Life </p>
+            <div class="banner-btn">
+                
+                <a href="/login"><span></span> Login In</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="sideNav">
+        <nav>
+            <ul>
+                <li><a href="#">HOME</a></li>
+                <li><a href="#feature">FEATURES</a></li>
+                <li><a href="#service">SERVICES</a></li>
+                <li><a href="#footer">MEET US</a></li>
+            </ul>
+        </nav>
+
+    </div>
+    <div id="manuBtn">
+        <img src="Barber_Shop_img/menu.png" id="menu">
+    </div>
+
+    <!-- Features -->
+
+    <section id="feature">
+        <div class="title-text">
+            <p>FEATURES</p>
+            <h1> Why choose us</h1>
+        </div>
+        <div class="feature-box">
+            <div class="features">
+                <h1>Experienced Staff</h1>
+                <div class="features-desc">
+                    <div class="feature-icon">
+                        <i class="fa fa-shield" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-text">
+                        <p>10+ years of experience</p>
+                    </div>
+                </div>
+                <h1>Pre Booking Online</h1>
+                <div class="features-desc">
+                    <div class="feature-icon">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-text">
+                        <p>Book Your Slot Hassle Free</p>
+                    </div>
+                </div>
+                <h1>Affordable Cost</h1>
+                <div class="features-desc">
+                    <div class="feature-icon">
+                        <i class="fa fa-inr" aria-hidden="true"></i>
+                    </div>
+                    <div class="feature-text">
+                        <p>Student Friendly Cost</p>
+                    </div>
+                </div>
+            </div>
+            <div class="features-img">
+                <img src="Barber_Shop_img/barber-man.jpg">
+            </div>
+        </div>
+    </section>
+    
+    <!-- SERVICES -->
+    <section id="service">
+        <div class="title-text">
+            <p>SERVICES</p>
+            <h1>We Provide Better</h1>
+        </div>
+        <div class="service-box">
+            <div class="single-service">
+                <img src="Barber_Shop_img/pic-1.jpg">
+                <div class="overlay"></div>
+                <div class="service-desc">
+                    <h3>Hair Styling</h3>
+                    <hr>
+                    <p> This is test under description of barber foundation this is test under description of barber foundation.</p>
+                </div>
+            </div>
+            <div class="single-service">
+                <img src="Barber_Shop_img/pic-2.jpg">
+                <div class="overlay"></div>
+                <div class="service-desc">
+                    <h3>Beard Trimming</h3>
+                    <hr>
+                    <p> This is test under description of barber foundation this is test under description of barber foundation.</p>
+                </div>
+            </div>
+            <div class="single-service">
+                <img src="Barber_Shop_img/pic-3.jpg">
+                <div class="overlay"></div>
+                <div class="service-desc">
+                    <h3>Hair Cut</h3>
+                    <hr>
+                    <p> This is test under description of barber foundation this is test under description of barber foundation.</p>
+                </div>
+            </div>
+            <div class="single-service">
+                <img src="Barber_Shop_img/pic-4.jpg">
+                <div class="overlay"></div>
+                <div class="service-desc">
+                    <h3>Dry Shampoo</h3>
+                    <hr>
+                    <p> This is test under description of barber foundation this is test under description of barber foundation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Testimonial -->
+
+    <!-- <section id="testimonial">
+        <div class="title-text">
+            <p>TESTIMONIAL</p>
+            <h1>What Client Says</h1>
+        </div>
+        <div class="testimonial-row">
+            <div class="testimonial-col">
+                <div class="user">
+                    <img src="Barber_Shop_img/img-1.jpg">
+                    <div class="user-info">
+                        <h4>KEN NORMAN<i class="fa fa-twitter" aria-hidden="true"></i></h4>
+                        <small>@kennorman</small>
+                    </div>
+                </div>
+                <p>asdada asfacasc aefadcavfabg a aefeadcfaef agvafafafaefa fa aada</p>
+            </div>
+            <div class="testimonial-col">
+                <div class="user">
+                    <img src="Barber_Shop_img/img-2.jpg">
+                    <div class="user-info">
+                        <h4>Liara Karian<i class="fa fa-twitter" aria-hidden="true"></i></h4>
+                        <small>@liarakarian</small>
+                    </div>
+                </div>
+                <p>asdada asfacasc aefadcavfabg a aefeadcfaef </p>
+            </div>
+            <div class="testimonial-col">
+                <div class="user">
+                    <img src="Barber_Shop_img/img-3.jpg">
+                    <div class="user-info">
+                        <h4>Ricky Danial<i class="fa fa-twitter" aria-hidden="true"></i></h4>
+                        <small>@rickydaniel</small>
+
+                    </div>
+                </div>
+                <p>asdada asfacasc aefadcavfabg a aefeadcfaef agvafafafaefa fa aada</p>
+            </div>
+        </div>
+    </section> -->
+    
+
+
+    <!-- footer -->
+    <section class="fixed-bottom" id="footer">
+        <img src="Barber_Shop_img/footer-img.png" class="footer-img">
+        <div class="title-text">
+            <p> CONTACT</p>
+            <h3>VISIT SHOP Today</h3>
+        </div>
+        <div class="footer-row">
+            <div class="footer-left">
+                <h1>Opening Hours</h1>
+                <p><i class="fa fa-clock-o"></i>Monday to Sunday - 9:00am to 6:30pm</p>
+                
+            </div>
+            <div class="footer-right">
+                <h1>Get In Touch</h1>
+                <p>Canteen area,LNMIIT,Jaiput<i class="fa fa-map-marker"></i></p>
+                <p>example@adas<i class="fa fa-paper-plane"></i></p>
+                <p>+91 8949283766<i class="fa fa-phone"></i></p>
+            </div>
+        </div>
+
+        <div class="social-links">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-twitter" aria-hidden="true"></i>
+            <i class="fa fa-youtube-play"></i>
+            <p>COPYRIGHT LNMIIT BARBER </p>
+        </div>
+    </section>
+     
+
+    <script>
+        var menuBtn = document.getElementById("manuBtn");
+        var sideNav = document.getElementById("sideNav");
+        var menu = document.getElementById("menu");
+        sideNav.style.right = "-250px";
+        menuBtn.onclick = function() {
+            if(sideNav.style.right =="-250px") {
+                sideNav.style.right = "0";
+                menu.src = "Barber_Shop_img/close.png";
+            }
+            else {
+                sideNav.style.right = "-250px";
+                menu.src = "Barber_Shop_img/menu.png";
+            }
+        }
+    </script>
+</body>
+</html>

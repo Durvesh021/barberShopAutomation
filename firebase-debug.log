@@ -1,0 +1,57 @@
+[debug] [2022-11-06T11:05:45.807Z] ----------------------------------------------------------------------
+[debug] [2022-11-06T11:05:45.809Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Admin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2022-11-06T11:05:45.810Z] CLI Version:   11.16.0
+[debug] [2022-11-06T11:05:45.810Z] Platform:      win32
+[debug] [2022-11-06T11:05:45.810Z] Node Version:  v16.17.0
+[debug] [2022-11-06T11:05:45.811Z] Time:          Sun Nov 06 2022 16:35:45 GMT+0530 (India Standard Time)
+[debug] [2022-11-06T11:05:45.811Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-11-06T11:05:45.818Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-11-06T11:05:45.819Z] > authorizing via signed-in user (20ucs068@lnmiit.ac.in)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\Admin\Desktop\bshop
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2022-11-06T11:06:20.659Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2022-11-06T11:06:25.248Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2022-11-06T11:06:25.248Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] i  Using project barber-shop-6dfd4 (Barber Shop) 
+[info] 
+=== Database Setup
+[info] i  database: ensuring required API firebasedatabase.googleapis.com is enabled... 
+[debug] [2022-11-06T11:06:33.765Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com [none]
+[debug] [2022-11-06T11:06:33.765Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com x-goog-quota-user=projects/barber-shop-6dfd4
+[debug] [2022-11-06T11:06:39.192Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com 200
+[debug] [2022-11-06T11:06:39.192Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com [omitted]
+[warn] !  database: missing required API firebasedatabase.googleapis.com. Enabling now... 
+[debug] [2022-11-06T11:06:39.194Z] >>> [apiv2][query] POST https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com:enable [none]
+[debug] [2022-11-06T11:06:39.195Z] >>> [apiv2][(partial)header] POST https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com:enable x-goog-quota-user=projects/barber-shop-6dfd4
+[debug] [2022-11-06T11:06:41.209Z] <<< [apiv2][status] POST https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com:enable 200
+[debug] [2022-11-06T11:06:41.209Z] <<< [apiv2][body] POST https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com:enable [omitted]
+[debug] [2022-11-06T11:06:51.224Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com [none]
+[debug] [2022-11-06T11:06:51.224Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com x-goog-quota-user=projects/barber-shop-6dfd4
+[debug] [2022-11-06T11:06:53.086Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com 200
+[debug] [2022-11-06T11:06:53.087Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/barber-shop-6dfd4/services/firebasedatabase.googleapis.com [omitted]
+[info] +  database: required API firebasedatabase.googleapis.com is enabled 
+[info] 
+[debug] [2022-11-06T11:06:53.095Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/barber-shop-6dfd4 [none]
+[debug] [2022-11-06T11:06:53.854Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/barber-shop-6dfd4 200
+[debug] [2022-11-06T11:06:53.854Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/barber-shop-6dfd4 {"projectId":"barber-shop-6dfd4","projectNumber":"725356141278","displayName":"Barber Shop","name":"projects/barber-shop-6dfd4","resources":{"hostingSite":"barber-shop-6dfd4"},"state":"ACTIVE","etag":"1_81c00153-0674-42fa-bd8d-d85da8184716"}
+[info] 
+[info] Firebase Realtime Database Security Rules allow you to define how your data should be
+[info] structured and when your data can be read from and written to.
+[info] 

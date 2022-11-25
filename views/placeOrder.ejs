@@ -1,0 +1,17 @@
+<%- include ('custheader') %>
+
+
+<div class="formdiv">
+    <form action="/orderForm" method="post" >
+        <label for="name">Full Name</label><br>
+        <input type="text" id="name" name="name"><br><br>
+        <label for="productName">Product Name</label><br>
+        <input type="text" id="productName" name="productName"><br><br>
+        <label for="qty">Quantity</label><br>
+        <input type="number" id="qty" min="1" value="1" name="qty"><br><br>
+        <button type="submit" class="btn btn-outline-secondary">Place</button>
+    </form>
+</div>
+
+
+<%- include ('footer') %>

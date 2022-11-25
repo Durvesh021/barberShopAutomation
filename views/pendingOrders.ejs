@@ -1,0 +1,188 @@
+<%- include ('custheader') %>
+<script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+></script>
+
+<script>
+    $(document).ready(function(){
+        $(document).find('.btn_save').hide();
+        $(document).find('.btn_cancel').hide();
+        $(document).find('.btn_edit').hide();
+        $(document).on('click', '.btn_accept', function(event) 
+        {
+            event.preventDefault();
+            var tbl_row = $(this).closest('tr');
+
+            var row_id = tbl_row.attr('row_id');
+
+            tbl_row.find('.btn_save').show();
+            tbl_row.find('.btn_cancel').show();
+
+            //hide edit button
+            tbl_row.find('.btn_accept').hide(); 
+            tbl_row.find('.btn_reject').hide(); 
+
+            //make the whole row editable
+            tbl_row.find('.row_data')
+            .attr('contenteditable', 'true')
+            .attr('edit_type', 'button')
+            .addClass('bg-light')
+            .css('padding','3px')
+
+            //--->add the original entry > start
+            tbl_row.find('.row_data').each(function(index, val) 
+            {  
+            //this will help in case user decided to click on cancel button
+            $(this).attr('original_entry', $(this).html());
+            }); 		
+            //--->add the original entry > end
+
+        });
+        $(document).on('click', '.btn_cancel', function(event) 
+        {
+            event.preventDefault();
+
+            var tbl_row = $(this).closest('tr');
+
+            var row_id = tbl_row.attr('row_id');
+
+            //hide save and cacel buttons
+            tbl_row.find('.btn_save').hide();
+            tbl_row.find('.btn_cancel').hide();
+
+            //show edit button
+            tbl_row.find('.btn_accept').show();
+            tbl_row.find('.btn_reject').show();
+
+            //make the whole row editable
+            tbl_row.find('.row_data')
+            .attr('edit_type', 'click')	 
+            .removeClass('bg-light')
+            .css('padding','') 
+            .attr('contenteditable', 'false')
+
+            tbl_row.find('.row_data').each(function(index, val) 
+            {   
+            $(this).html( $(this).attr('original_entry') ); 
+            });  
+        });
+
+        $(document).on('click', '.btn_save', function(event) 
+        {
+            event.preventDefault();
+            var tbl_row = $(this).closest('tr');
+
+            var row_id = tbl_row.attr('row_id');
+
+            
+            //hide save and cacel buttons
+            tbl_row.find('.btn_save').hide();
+            tbl_row.find('.btn_cancel').hide();
+
+            //show edit button
+            tbl_row.find('.btn_reject').show();
+            tbl_row.find('.btn_edit').show();
+
+
+            //make the whole row editable
+            tbl_row.find('.row_data')
+            .attr('edit_type', 'click')
+            .removeClass('bg-light')
+            .css('padding','') 
+            .attr('contenteditable', 'false')
+
+            //--->get row data > start
+            var arr = {}; 
+    
+            tbl_row.find('.row_data').each(function(index, val) 
+            {   
+                var col_name = $(this).attr('col_name');  
+                var col_val  =  $(this).html().trim();
+                console.log(col_val);
+                arr[col_name] = col_val;
+            });
+            arr['orderId'] = row_id;
+            //--->get row data > end
+
+            //use the "arr"	object for your ajax call
+            $.extend(arr, {row_id:row_id});
+            console.log(arr);
+            //out put to show
+            $.post("/orderEditbyBarber",{arr:arr},function(res){
+                alert("Saved!!");
+            });
+        });
+
+
+
+    })
+    $(document).on('click', '.btn_reject', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+
+		var row_id = tbl_row.attr('row_id');
+
+        $.post('/tempcancelOrder',{orderId:row_id},function(res){
+            location.reload();
+        })
+	});
+</script>
+
+<div class="apptable">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Product</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Delivery Date</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<tables.length ; i++){  %>
+          <tr row_id="<%= tables[i].orderId %>">
+            <th scope="row"><%= i+1 %></th>
+            <td>
+                <%= tables[i].customerName %>
+            </td>
+            <td>
+                <%= tables[i].mobNumber %>
+            </td>
+            <td>
+                <%= tables[i].product %>
+            </td>
+            <td>
+                <%= tables[i].qty %>
+            </td>
+            <td>
+                <div class="row_data" edit_type="click" col_name="amt">
+                    <%= tables[i].amount %>
+                </div>
+            </td>
+            <td>
+                <div class="row_data" edit_type="click" col_name="date">
+                    <%= tables[i].deliveryDate %>
+                </div>
+            </td>
+            <td>
+                <span class="btn_accept" > <a href="#" class="btn btn-link "  > Accept</a> |</span>
+                <span class="btn_edit" > <a href="#" class="btn btn-link "  > Edit</a> |</span>
+                <span class="btn_save"> <a href="#" class="btn btn-link"  > Save</a> | </span>
+                <span class="btn_cancel"> <a href="#" class="btn btn-link" > Cancel</a>  </span>
+                <span class="btn_reject"> <a href="#" class="btn btn-link" > Reject</a> </span>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+      
+    </table>
+  </div>
+
+<%- include ('footer') %>

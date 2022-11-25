@@ -1,0 +1,72 @@
+<%- include ('custheader') %>
+<script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+></script>
+
+<script>
+    $(document).ready(function(){
+      $("tr").addClass("text-center");
+    })
+    $(document).on('click', '.btn_reject', function(event) 
+    {
+      event.preventDefault();
+      var tbl_row = $(this).closest('tr');
+
+      var row_id = tbl_row.attr('row_id');
+
+          $.post('/tempcancelOrder',{orderId:row_id},function(res){
+              location.reload();
+          })
+    });
+</script>
+
+<div class="apptable">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Mobile</th>
+          <th scope="col">Product</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Delivery Date</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<tables.length ; i++){  %>
+          <tr row_id="<%= tables[i].orderId %>">
+            <th scope="row"><%= i+1 %></th>
+            <td>
+                <%= tables[i].customerName %>
+            </td>
+            <td>
+                <%= tables[i].mobNumber %>
+            </td>
+            <td>
+                <%= tables[i].product %>
+            </td>
+            <td>
+                <%= tables[i].qty %>
+            </td>
+            <td>
+              <%= tables[i].amount %>
+          </td>
+            <td>
+              <%= tables[i].deliveryDate %>
+            </td>
+            
+            <td>
+                <span class="btn_reject"> <a href="#" class="btn btn-link" row_id="<%=tables[i].serviceId%>"> Reject</a> </span>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+      
+    </table>
+  </div>
+
+<%- include ('footer') %>

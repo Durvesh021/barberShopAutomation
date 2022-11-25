@@ -1,0 +1,13 @@
+<%- include ('custheader') %>
+
+<form action="/submitItemForm" method="post" class="formdiv">
+    <label for="">Items Required for <%= name %> </label><br>        
+    <% tables.forEach(element => { %>
+        <input type="checkbox" value="<%=element.itemId%>" id="<%=element.itemId%>" name="items">
+        <label for="<%=element.itemId%>"><%=element.itemName%></label>
+        <br>
+    <% }) %>
+    <button type="submit">Apply</button>
+</form>
+
+<%- include ('footer') %>

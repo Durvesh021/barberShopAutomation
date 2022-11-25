@@ -1,0 +1,297 @@
+<%- include ('custheader') %>
+<script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $(document).find('.btn_save').hide();
+    $(document).find('.btn_cancel').hide();
+    $(document).find('.btn_insert').hide();
+
+  //--->button > edit > start	
+  $(document).on('click', '.btn_edit', function(event) 
+  {
+    event.preventDefault();
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    tbl_row.find('.btn_save').show();
+    tbl_row.find('.btn_cancel').show();
+
+    //hide edit button
+    tbl_row.find('.btn_edit').hide(); 
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('contenteditable', 'true')
+    .attr('edit_type', 'button')
+    .addClass('bg-light')
+    .css('padding','3px')
+
+    //--->add the original entry > start
+    tbl_row.find('.row_data').each(function(index, val) 
+    {  
+      //this will help in case user decided to click on cancel button
+      $(this).attr('original_entry', $(this).html());
+    }); 		
+    //--->add the original entry > end
+
+  });
+  //--->button > edit > end
+  //--->button > cancel > start
+  $(document).on('click', '.btn_cancel', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    //hide save and cacel buttons
+    tbl_row.find('.btn_save').hide();
+    tbl_row.find('.btn_insert').hide();
+    tbl_row.find('.btn_cancel').hide();
+    
+    //show edit button
+    tbl_row.find('.btn-add').show();
+    tbl_row.find('.btn_edit').show();
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('edit_type', 'click')	 
+    .removeClass('bg-light')
+    .css('padding','') 
+    .attr('contenteditable', 'false')
+
+    tbl_row.find('.row_data').each(function(index, val) 
+    {   
+      $(this).html( $(this).attr('original_entry') ); 
+    });  
+  });
+  //--->button > cancel > end
+    //--->save whole row entery > start	
+	$(document).on('click', '.btn_save', function(event) 
+	{
+		event.preventDefault();
+
+
+
+		var tbl_row = $(this).closest('tr');
+
+		var row_id = tbl_row.attr('row_id');
+
+		
+		//hide save and cacel buttons
+		tbl_row.find('.btn_save').hide();
+		tbl_row.find('.btn_cancel').hide();
+
+		//show edit button
+		tbl_row.find('.btn_edit').show();
+
+
+		//make the whole row editable
+		tbl_row.find('.row_data')
+		.attr('edit_type', 'click')
+		.removeClass('bg-light')
+		.css('padding','') 
+    .attr('contenteditable', 'false')
+
+		//--->get row data > start
+		var arr = {}; 
+   
+		tbl_row.find('.row_data').each(function(index, val) 
+		{   
+			var col_name = $(this).attr('col_name');  
+			var col_val  =  $(this).html().trim();
+      console.log(col_val);
+			arr[col_name] = col_val;
+		});
+		//--->get row data > end
+
+		//use the "arr"	object for your ajax call
+		$.extend(arr, {row_id:row_id});
+    console.log(arr);
+		//out put to show
+    $.post("/serviceEdit",{arr:arr},function(res){
+      if(res=='done'){
+        alert("Saved!!");
+        location.reload()
+      }
+      else{
+        alert("Error!!");
+      }
+    });
+		$('.post_msg').html( '<pre class="bg-success">'+JSON.stringify(arr, null, 2) +'</pre>')
+	});
+
+  $(document).on('click', '.btn-add', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    //hide save and cacel buttons
+    tbl_row.find('.btn_insert').show();
+    tbl_row.find('.btn_cancel').show();
+
+    //hide edit button
+    tbl_row.find('.btn-add').hide(); 
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('contenteditable', 'true')
+    .attr('edit_type', 'button')
+    .addClass('bg-light')
+    .css('padding','3px')
+
+    tbl_row.find('.row_data').each(function(index, val) 
+    {   
+      $(this).html( $(this).attr('original_entry') ); 
+    });  
+  });
+
+  $(document).on('click', '.btn_insert', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    //hide save and cacel buttons
+    tbl_row.find('.btn_insert').hide();
+    tbl_row.find('.btn_cancel').hide();
+
+    //hide edit button
+    tbl_row.find('.btn-add').hide(); 
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+		.attr('edit_type', 'click')
+		.removeClass('bg-light')
+		.css('padding','') 
+    .attr('contenteditable', 'false')
+
+    var arr = {}; 
+   
+		tbl_row.find('.row_data').each(function(index, val) 
+		{   
+			var col_name = $(this).attr('col_name');  
+			var col_val  =  $(this).html().trim();
+      console.log(col_val);
+			arr[col_name] = col_val;
+		});
+    $.post("/serviceInsert",{arr:arr},function(res){
+      if(res=='done'){
+        alert("Added!!");
+        location.reload()
+      }
+      else{
+        alert("Error!!");
+      }
+    });
+    
+  });
+  $(document).on('click', '.btn_items', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+    var row_id = tbl_row.attr('row_id');
+    //hide save and cacel buttons
+    var arr = {}; 
+    tbl_row.find('.row_data').each(function(index, val) 
+		{   
+			var col_name = $(this).attr('col_name');  
+			var col_val  =  $(this).html().trim();
+      console.log(col_val);
+			arr[col_name] = col_val;
+		});
+    $.post("/mapItems",{arr:arr},function(res){
+      // if(res=='done'){
+      //   
+      // }
+      // else console.log(res);
+      location.replace("/map");
+      console.log("Hi");
+    });
+  });
+
+});
+	//--->save whole row entery > end
+</script>
+<script src="https://kit.fontawesome.com/41caa889d4.js" crossorigin="anonymous"></script>
+
+<div class="tbl_user_data mt-5">
+    <h1>Services</h1>
+    <table>
+        
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col" class="d-none">Service Id</th>
+          <th scope="col">Service</th>
+          <th scope="col">For Gender</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<tables.length ; i++){  %>
+          <tr row_id="<%= tables[i].serviceId%>">
+            <th scope="row"><%= i+1 %></th>
+            <td class="d-none">
+              <div class="row_data " edit_type="click" col_name="id">
+                <%= tables[i].serviceId %>
+              </div>
+            </td>
+            <td>
+              <div class="row_data" edit_type="click" col_name="fname">
+                <%= tables[i].serviceName %>
+              </div>
+            </td>
+            <td>
+              <div class="row_data" edit_type="click" col_name="lname">
+                <%= tables[i].forGender %>
+              </div>
+            </td>
+            <td>
+              <div class="row_data price" edit_type="click" col_name="email">
+                <%= tables[i].price %>
+              </div>
+            </td>
+  
+            <td>
+              <span class="btn_edit" > <a href="#" class="btn btn-link " row_id="<%=tables[i].serviceId%>" > <i class="fa-solid fa-pen"></i></a> </span>
+              <span class="btn_save"> <a href="#" class="btn btn-link"  row_id="<%=tables[i].serviceId%>"> Save</a> | </span>
+              <span class="btn_cancel"> <a href="#" class="btn btn-link" row_id="<%=tables[i].serviceId%>"> Cancel</a> | </span>
+              <a href="deleteService/<%= tables[i].serviceId %>" ><i class="fa-solid fa-trash"></i></a>
+              <span class="btn_items"> <a class="btn btn-link" row_id="<%=tables[i].serviceId%>"> Map Items</a> </span>
+            </td>
+
+          </tr>
+        <% } %>
+        <tr>
+          <th scope="row"></th>
+          <td class="row_data" col_name="name"></td>
+          <td class="row_data" col_name="forGender"></td>
+          <td class="row_data" col_name="price"></td>
+          <td><a href="#" class="btn btn-link btn-add"><i class="fa-solid fa-plus"></i> Add</a>
+            <span class="btn_insert"> <a href="#" class="btn btn-link"> Save</a> | </span>
+            <span class="btn_cancel"> <a href="#" class="btn btn-link" > Cancel</a> | </span>
+          </td>
+        </tr>
+      </tbody>
+     
+    </table>
+  </div>
+
+
+<%- include ('footer') %>

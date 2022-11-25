@@ -1,0 +1,235 @@
+<% $('input[name="date"]').click(function(){ 
+        $.post("/temptoday",{date:date},function(res){
+          arr = res;
+          console.log(arr);
+        })
+      })%> 
+      <% var maletimeslot = ["09:00:00","09:30:00","10:00:00","10:30:00","11:00:00","11:30:00","12:00:00","12:30:00","13:00:00","13:30:00","14:00:00","14:30:00","15:00:00","15:30:00","16:00:00","16:30:00","17:00:00","17:30:00","18:00:00","18:30:00"]; %>
+      <% var arr = ["10:00:00"]; %>
+      <% for(let i=0;i<maletimeslot.length;i++){ %>
+        <%  if(arr.includes(maletimeslot[i])){ %>
+          <%    maletimeslot.splice(i,1); %>
+        <% } %>
+      <% } %>
+      
+      
+      
+      
+      <% for(var i=0; i<maletimeslot.length ; i++){  %>
+        <% if(i!=8 && i!=9) { %>
+        <input type="radio" id="<%= 100+i %>" name="slots" value="<%= maletimeslot[i] %>"/>
+        <label for="<%= 100+i %>"> <%=maletimeslot[i] %></label>
+        <% } %>
+      <% } %>
+
+
+
+var date = new Date();
+    const d = new Date("2022-03-25");
+    
+    $('input[id="today"]').attr("value",date.toDateString());
+    console.log($('input[id="today"]').attr("value"));
+    var tomorrow = new Date(date);  
+    tomorrow.setDate(tomorrow.getDate()+1);
+    $('input[id="tommorrow"]').attr("value",tomorrow.toDateString());
+    console.log($('input[id="tommorrow"]').attr("value"));
+
+<% var maletimeslot = ["09:00:00","09:30:00","10:00:00","10:30:00","11:00:00","11:30:00","12:00:00","12:30:00","13:00:00","13:30:00","14:00:00","14:30:00","15:00:00","15:30:00","16:00:00","16:30:00","17:00:00","17:30:00","18:00:00","18:30:00"]; %> 
+      <% for(var i=0; i<maletimeslot.length ; i++){  %>
+        <% if(i!=8 && i!=9) { %>
+          <input type="radio" id="<%= 200+i %>" name="slots" value="<%= maletimeslot[i] %>"/>
+          <label for="<%= 200+i %>"> <%=maletimeslot[i] %></label>
+          <% } %>
+      <% } %>
+
+
+
+console.log(name);
+console.log(gender);
+console.log(time);
+console.log(services);
+console.log(date);
+
+
+
+
+$(document).ready(function(){
+    $(document).find('.btn_save').hide();
+    $(document).find('.btn_cancel').hide();
+      //--->make div editable > start
+  $(document).on('click', '.row_data', function(event) 
+  {
+    event.preventDefault(); 
+
+    if($(this).attr('edit_type') == 'button')
+    {
+      return false; 
+    }
+
+    //make div editable
+    $(this).closest('div').attr('contenteditable', 'true');
+    //add bg css
+    $(this).addClass('bg-warning').css('padding','5px');
+
+    $(this).focus();
+    
+  })	
+  //--->make div editable > end
+  //--->button > edit > start	
+  $(document).on('click', '.btn_edit', function(event) 
+  {
+    event.preventDefault();
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    tbl_row.find('.btn_save').show();
+    tbl_row.find('.btn_cancel').show();
+
+    //hide edit button
+    tbl_row.find('.btn_edit').hide(); 
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('contenteditable', 'true')
+    .attr('edit_type', 'button')
+    .addClass('bg-warning')
+    .css('padding','3px')
+
+    //--->add the original entry > start
+    tbl_row.find('.row_data').each(function(index, val) 
+    {  
+      //this will help in case user decided to click on cancel button
+      $(this).attr('original_entry', $(this).html());
+    }); 		
+    //--->add the original entry > end
+
+  });
+  //--->button > edit > end
+  //--->button > cancel > start	
+  $(document).on('click', '.btn_cancel', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    //hide save and cacel buttons
+    tbl_row.find('.btn_save').hide();
+    tbl_row.find('.btn_cancel').hide();
+
+    //show edit button
+    tbl_row.find('.btn_edit').show();
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('edit_type', 'click')	 
+    .removeClass('bg-warning')
+    .css('padding','') 
+
+    tbl_row.find('.row_data').each(function(index, val) 
+    {   
+      $(this).html( $(this).attr('original_entry') ); 
+    });  
+  });
+  //--->button > cancel > end
+    //--->save whole row entery > start	
+	$(document).on('click', '.btn_save', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+
+		var row_id = tbl_row.attr('row_id');
+
+		
+		//hide save and cacel buttons
+		tbl_row.find('.btn_save').hide();
+		tbl_row.find('.btn_cancel').hide();
+
+		//show edit button
+		tbl_row.find('.btn_edit').show();
+
+
+		//make the whole row editable
+		tbl_row.find('.row_data')
+		.attr('edit_type', 'click')
+		.removeClass('bg-warning')
+		.css('padding','') 
+
+		//--->get row data > start
+		var arr = {}; 
+		tbl_row.find('.row_data').each(function(index, val) 
+		{   
+			var col_name = $(this).attr('col_name');  
+			var col_val  =  $(this).html();
+			arr[col_name] = col_val;
+		});
+		//--->get row data > end
+
+		//use the "arr"	object for your ajax call
+		$.extend(arr, {row_id:row_id});
+
+		//out put to show
+		$('.post_msg').html( '<pre class="bg-success">'+JSON.stringify(arr, null, 2) +'</pre>')
+		 
+
+	});
+  });
+
+	//--->save whole row entery > end
+</script>
+<div class="tbl_user_data">
+    <h1>Services</h1>
+    <table>
+        
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Service</th>
+          <th scope="col">For Gender</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i<tables.length ; i++){  %>
+          <tr>
+            <th scope="row"><%= i+1 %></th>
+            <td>
+              <div class="row_data" edit_type="click" col_name="fname">
+                <%= tables[i].serviceName %>
+              </div>
+            </td>
+            <td>
+              <div class="row_data" edit_type="click" col_name="fname">
+                <%= tables[i].forGender %>
+              </div>
+            </td>
+            <td>
+              <div class="row_data" edit_type="click" col_name="fname">
+                <%= tables[i].price %>
+              </div>
+            </td>
+            <td>
+              <span class="btn_edit" > <a href="#" class="btn btn-link " row_id="<%=tables[i].serviceId%>" > Edit</a> </span>
+              <span class="btn_save"> <a href="#" class="btn btn-link"  row_id="<%=tables[i].serviceId%>"> Save</a> | </span>
+              <span class="btn_cancel"> <a href="#" class="btn btn-link" row_id="<%=tables[i].serviceId%>"> Cancel</a> | </span>
+            </td>
+
+          </tr>
+        <% } %>
+      </tbody>
+      
+    </table>
+    <div class="panel panel-default">
+      <div class="panel-heading"><b>HTML Table Edits/Upates</b> </div>
+    
+      <div class="panel-body">
+      
+      <p>All the changes will be displayed below</p>
+      <div class="post_msg"> </div>
+    
+      </div>
+    </div>
+  </div>

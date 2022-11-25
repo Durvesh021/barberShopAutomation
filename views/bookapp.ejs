@@ -1,0 +1,149 @@
+<%- include ('custheader') %>
+<script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+></script>
+
+<script>
+$(document).ready(function(){
+    $(".F").hide();
+    $("#male").prop( "checked", true);
+    $('input[name="gender"]').click(function(){
+        $('input[name="date"]').prop( "checked", false );
+        $(".box1").hide();
+        var inputValue = $(this).attr("value");
+        var targetBox = $("." + inputValue);
+        $(".box").not(targetBox).hide();
+        $(targetBox).show();
+        $( ".box input" ).prop( "checked", false );
+    });
+});
+$(document).ready(function(){
+    $(".box1").hide();
+    $('input[name="date"]').click(function(){
+        var inputValue = $(this).attr("id");
+        var targetBox = $("." + inputValue);
+        $(".box1").not(targetBox).hide();
+        $(targetBox).show();
+        $( ".box1 input" ).prop( "checked", false );
+        var flag = $('input[name=date]:checked', '#appform').val()
+        var date = new Date();
+        var div = "num1";
+        var id = 100;
+        if(flag!="today"){
+          var tomorrow = new Date(date);  
+          tomorrow.setDate(tomorrow.getDate()+1);
+          date = tomorrow;
+          div = "num2";
+          id = 200;
+        }
+        var gender = $('input[name=gender]:checked', '#appform').val();
+        
+        // var date  = new Date().toDateString(); 
+        $.post("/temptoday",{date:date.toDateString(),gender:gender},function(res){
+          //console.log(gender);
+          var arr = res;
+          var arr1 = [];
+          for(let i=0;i<arr.length;i++){
+            arr1[i] = arr[i].startTime;
+          }
+          console.log(arr);
+          var maletimeslot = ["09:00:00","09:30:00","10:00:00","10:30:00","11:00:00","11:30:00","12:00:00","12:30:00","14:00:00","14:30:00","15:00:00","15:30:00","16:00:00","16:30:00","17:00:00","17:30:00","18:00:00","18:30:00"];
+          for(let i=0;i<maletimeslot.length;i++){
+            if(arr1.includes(maletimeslot[i])){
+              maletimeslot.splice(i,1);
+            }
+          }
+          console.log(maletimeslot);
+          const division = document.getElementById(div);
+          division.innerHTML = "";
+          for(let i=0;i<maletimeslot.length;i++){
+            const label = document.createElement("label");
+            label.innerText = maletimeslot[i];
+            const temp = document.createElement("input");
+            temp.setAttribute("id",id+i+"");
+            label.setAttribute("for",id+i+"");
+            temp.setAttribute("type","radio"); 
+            temp.setAttribute("name","slots");
+            temp.setAttribute("value",maletimeslot[i]);
+            division.appendChild(temp); 
+            division.appendChild(label);
+          }
+        })
+    });
+    
+});
+
+</script>
+
+<div>
+  <form action="/appbookedd" method="post" class="mt-5" style="width: 550px;" id="appform">
+    <h3>Appointment</h3>
+    <label for="fullname">Name</label><br />
+    <input type="text" id="fullname" name="name" /><br /><br />
+    <label for="gender">Select Gender</label><br>
+    <input type="radio" id="male" name="gender" value="M" />
+    <label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="F" />
+    <label for="female">Female</label><br />
+     
+    <div class="M box">
+      <label for="service">Choose a service:</label><br>
+      <table class="table">
+        <thead>
+          <tr>
+            <td scope="col">Select</td>
+            <th scope="col">Service</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<male.length ; i++){  %>
+            <tr>
+              <td><input type="checkbox" name="services" value="<%= male[i].serviceId %>" id="<%= i %>"></td>
+              <td><%= male[i].serviceName %></td>
+              <td><%= male[i].price %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <br />
+    </div>
+    <div class="F box">
+      <label for="service">Choose a service:</label><br>
+      <table class="table">
+        <thead>
+          <tr>
+            <td scope="col">Select</td>
+            <th scope="col">Service</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i<female.length ; i++){  %>
+            <tr>
+              <td><input type="checkbox" name="services" value="<%= female[i].serviceId %>" id="<%= i %>"></td>
+              <td><%= female[i].serviceName %></td>
+              <td><%= female[i].price %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    <br />
+    </div>
+    <label for="date">Choose day:</label><br>
+    <input type="radio" id="today" name="date" value="today" />
+    <label for="today">Today</label>
+    <input type="radio" id="tommorrow" name="date" value="tommorrow" />
+    <label for="tommorrow">Tommorrow</label><br /><br />
+    <div class="today overflow-scroll box1" style="height: 100px;" id="num1">
+      
+    </div>
+    <div class="tommorrow overflow-scroll box1" style="height: 100px;" id="num2">
+      
+    </div>
+    <button type="submit" class="btn btn-outline-secondary">Next</button>
+  </form>
+</div>
+<%- include ('footer') %>

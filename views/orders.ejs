@@ -1,0 +1,917 @@
+<%- include ('custheader') %>
+
+<script>
+
+$(document).ready(function(){
+
+  $("button").css("transform","translateY(0)");
+  $("button").css("background-color","grey");
+  $("button").css("color","black");
+
+  $(".btn-approved").css("transform","translateY(5px)");
+  $(".btn-approved").css("background-color","black");
+  $(".btn-approved").css("color","white");
+  document.getElementById("dynamicTable").innerHTML = "";
+  var tables;
+  $.post("/approved",function(res){
+    tables = res;
+    const tbl = document.createElement("table");
+    tbl.classList.add("table");
+    tbl.classList.add("table-hover");
+    tbl.classList.add("table-striped");
+
+    const tblHead = document.createElement("thead");
+
+    const headRow = document.createElement("tr");
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("#");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Name");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Mobile");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Product");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Quantity");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Amount");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Delivery Date");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Action");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    tblHead.appendChild(headRow);
+    tbl.appendChild(tblHead )
+
+    const tblBody = document.createElement("tbody");
+    
+    // creating all cells
+    for (let i = 0; i < tables.length; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+      row.setAttribute('row_id',tables[i].orderId);
+
+      var cell = document.createElement("th");
+      cell.setAttribute('scope','row');
+      var cellText = document.createTextNode(i+1);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].customerName);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].mobNumber);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].product);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].qty);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].amount);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].deliveryDate);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      const td = document.createElement("td");
+      //const acceptSpan = '<span class="btn_accept" > <a href="#" class="btn btn-link "  > Accept</a> |</span>              '
+      const rejectSpan = '<span class="btn_reject"> <a href="#" class="btn btn-link" > Reject</a> </span>     '
+      const completeSpan = '<span class="btn_complete"> <a href="#" class="btn btn-link" > Completed</a> </span>     '
+      //const editSpan = '<span class="btn_edit" > <a href="#" class="btn btn-link "  > Edit</a> |</span>'
+    
+      td.innerHTML =  td.innerHTML +rejectSpan + completeSpan;
+      row.appendChild(td);
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    
+    }
+
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    $(".apptable").append(tbl);
+
+    $("tr").addClass("text-center");
+
+  $(document).on('click', '.btn_reject', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+    tbl_row.hide();
+
+		var row_id = tbl_row.attr('row_id');
+
+    $.post('/tempcancelOrder',{orderId:row_id},function(res){
+      if(res=='done'){
+        alert("Order Declined!!2");
+      }
+      else{
+        alert("Error!!");
+      }
+    })
+	});
+  $(document).on('click', '.btn_complete', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+    tbl_row.hide();
+
+		var row_id = tbl_row.attr('row_id');
+
+    $.post('/tempcompleteOrder',{orderId:row_id},function(res){
+      if(res=='done'){
+        alert("Order Completed!!");
+      }
+      else{
+        alert("Error!!");
+      }
+    })
+	});
+
+  })
+})
+
+$(document).on('click', '.btn-pending', function(event) 
+{
+  event.preventDefault();
+
+  $("button").css("transform","translateY(0)");
+  $("button").css("background-color","grey");
+  $("button").css("color","black");
+
+  $(".btn-pending").css("transform","translateY(5px)");
+  $(".btn-pending").css("background-color","black");
+  $(".btn-pending").css("color","white");
+
+  document.getElementById("dynamicTable").innerHTML = "";
+  var tables;
+  $.post("/pending",function(res){
+    tables = res;
+    const tbl = document.createElement("table");
+    tbl.classList.add("table");
+    tbl.classList.add("table-hover");
+    tbl.classList.add("table-striped");
+
+    const tblHead = document.createElement("thead");
+
+    const headRow = document.createElement("tr");
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("#");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Name");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Mobile");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Product");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Quantity");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Amount");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Delivery Date");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Action");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    tblHead.appendChild(headRow);
+    tbl.appendChild(tblHead )
+
+    const tblBody = document.createElement("tbody");
+    
+    // creating all cells
+    for (let i = 0; i < tables.length; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+      row.setAttribute('row_id',tables[i].orderId);
+
+      var cell = document.createElement("th");
+      cell.setAttribute('scope','row');
+      var cellText = document.createTextNode(i+1);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].customerName);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].mobNumber);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].product);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].qty);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      const cell1 = document.createElement("td");
+      cell1.classList.add("row_data");
+      cell1.setAttribute('edit_type','click');
+      cell1.setAttribute('col_name','amt');
+      cellText = document.createTextNode(tables[i].amount);
+      cell1.appendChild(cellText);
+      row.appendChild(cell1);
+
+      const cell2 = document.createElement("td");
+      cell2.classList.add("row_data");
+      cell2.setAttribute('edit_type','click');
+      cell2.setAttribute('col_name','date');
+      cellText = document.createTextNode(tables[i].deliveryDate);
+      cell2.appendChild(cellText);
+      row.appendChild(cell2);
+
+      const td = document.createElement("td");
+      const acceptSpan = '<span class="btn_accept" > <a href="#" class="btn btn-link "  > Accept</a> |</span>              '
+      const rejectSpan = '              <span class="btn_save"> <a href="#" class="btn btn-link"  > Save</a> | </span>             <span class="btn_cancel"> <a href="#" class="btn btn-link" > Cancel</a>  </span>             <span class="btn_reject"> <a href="#" class="btn btn-link" > Reject</a> </span>     '
+      const editSpan = '<span class="btn_edit" > <a href="#" class="btn btn-link "  > Edit</a> |</span>'
+      if(tables[i].amount==null || tables[i].deliveryDate==null){
+        td.innerHTML =  td.innerHTML +acceptSpan;
+      }
+      else{
+        td.innerHTML =  td.innerHTML +editSpan;
+      }
+      td.innerHTML =  td.innerHTML +rejectSpan;
+      row.appendChild(td);
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    
+    }
+
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    $(".apptable").append(tbl);
+
+    $("tr").addClass("text-center");
+
+    $(document).find('.btn_save').hide();
+  $(document).find('.btn_cancel').hide();
+
+
+  $(document).on('click', '.btn_edit', function(event) 
+  {
+    event.preventDefault();
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    tbl_row.find('.btn_save').show();
+    tbl_row.find('.btn_cancel').show();
+
+    //hide edit button
+    tbl_row.find('.btn_edit').hide(); 
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('contenteditable', 'true')
+    .attr('edit_type', 'button')
+    .addClass('bg-light')
+    .css('padding','3px')
+
+    //--->add the original entry > start
+    tbl_row.find('.row_data').each(function(index, val) 
+    {  
+      //this will help in case user decided to click on cancel button
+      $(this).attr('original_entry', $(this).html());
+    }); 		
+    //--->add the original entry > end
+
+  });
+ 
+  $(document).on('click', '.btn_accept', function(event) 
+  {
+    event.preventDefault();
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    tbl_row.find('.btn_save').show();
+    tbl_row.find('.btn_cancel').show();
+
+    //hide edit button
+    tbl_row.find('.btn_accept').hide(); 
+    tbl_row.find('.btn_reject').hide(); 
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('contenteditable', 'true')
+    .attr('edit_type', 'button')
+    .addClass('bg-light')
+    .css('padding','3px')
+
+    //--->add the original entry > start
+    tbl_row.find('.row_data').each(function(index, val) 
+    {  
+    //this will help in case user decided to click on cancel button
+      $(this).attr('original_entry', $(this).html());
+    }); 		
+    //--->add the original entry > end
+
+  });
+  $(document).on('click', '.btn_cancel', function(event) 
+  {
+    event.preventDefault();
+
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    //hide save and cacel buttons
+    tbl_row.find('.btn_save').hide();
+    tbl_row.find('.btn_cancel').hide();
+
+    //show edit button
+    tbl_row.find('.btn_accept').show();
+    tbl_row.find('.btn_reject').show();
+    tbl_row.find('.btn_edit').show();
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('edit_type', 'click')	 
+    .removeClass('bg-light')
+    .css('padding','') 
+    .attr('contenteditable', 'false')
+
+    tbl_row.find('.row_data').each(function(index, val) 
+    {   
+      $(this).html( $(this).attr('original_entry') ); 
+    });  
+  });
+
+  $(document).on('click', '.btn_save', function(event) 
+  {
+    event.preventDefault();
+    var tbl_row = $(this).closest('tr');
+
+    var row_id = tbl_row.attr('row_id');
+
+    
+    //hide save and cacel buttons
+    tbl_row.find('.btn_save').hide();
+    tbl_row.find('.btn_cancel').hide();
+
+    //show edit button
+    tbl_row.find('.btn_reject').show();
+    tbl_row.find('.btn_edit').show();
+    
+
+
+    //make the whole row editable
+    tbl_row.find('.row_data')
+    .attr('edit_type', 'click')
+    .removeClass('bg-light')
+    .css('padding','') 
+    .attr('contenteditable', 'false')
+
+    //--->get row data > start
+    var arr = {}; 
+
+    tbl_row.find('.row_data').each(function(index, val) 
+    {   
+      var col_name = $(this).attr('col_name');  
+      var col_val  =  $(this).html().trim();
+      console.log(col_val);
+      arr[col_name] = col_val;
+    });
+    arr['orderId'] = row_id;
+    //--->get row data > end
+
+    //use the "arr"	object for your ajax call
+    $.extend(arr, {row_id:row_id});
+    console.log(arr);
+    //out put to show
+    $.post("/orderEditbyBarber",{arr:arr},function(res){
+        alert("Saved!!");
+    });
+  });
+  $(document).on('click', '.btn_reject', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+    tbl_row.hide();
+		var row_id = tbl_row.attr('row_id');
+
+    $.post('/tempcancelOrder',{orderId:row_id},function(res){
+      if(res=='done'){
+        alert("Order Declined1!!");
+      }
+      else{
+        alert("Error!!");
+      }
+    })
+	});
+
+  })
+});
+
+
+$(document).on('click', '.btn-approved', function(event) 
+{
+  event.preventDefault();
+
+  $("button").css("transform","translateY(0)");
+  $("button").css("background-color","grey");
+  $("button").css("color","black");
+
+  $(".btn-approved").css("transform","translateY(5px)");
+  $(".btn-approved").css("background-color","black");
+  $(".btn-approved").css("color","white");
+
+  document.getElementById("dynamicTable").innerHTML = "";
+  var tables;
+  $.post("/approved",function(res){
+    tables = res;
+    const tbl = document.createElement("table");
+    tbl.classList.add("table");
+    tbl.classList.add("table-hover");
+    tbl.classList.add("table-striped");
+
+    const tblHead = document.createElement("thead");
+
+    const headRow = document.createElement("tr");
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("#");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Name");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Mobile");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Product");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Quantity");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Amount");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Delivery Date");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Action");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    tblHead.appendChild(headRow);
+    tbl.appendChild(tblHead )
+
+    const tblBody = document.createElement("tbody");
+    
+    // creating all cells
+    for (let i = 0; i < tables.length; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+      row.setAttribute('row_id',tables[i].orderId);
+
+      var cell = document.createElement("th");
+      cell.setAttribute('scope','row');
+      var cellText = document.createTextNode(i+1);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].customerName);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].mobNumber);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].product);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].qty);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].amount);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].deliveryDate);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      const td = document.createElement("td");
+      //const acceptSpan = '<span class="btn_accept" > <a href="#" class="btn btn-link "  > Accept</a> |</span>              '
+      const rejectSpan = '<span class="btn_reject"> <a href="#" class="btn btn-link" > Reject</a> </span>     '
+      const completeSpan = '<span class="btn_complete"> <a href="#" class="btn btn-link" > Completed</a> </span>     '
+      //const editSpan = '<span class="btn_edit" > <a href="#" class="btn btn-link "  > Edit</a> |</span>'
+    
+      td.innerHTML =  td.innerHTML +rejectSpan + completeSpan;
+      row.appendChild(td);
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    
+    }
+
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    $(".apptable").append(tbl);
+
+    $("tr").addClass("text-center");
+
+  $(document).on('click', '.btn_reject', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+    tbl_row.hide();
+
+		var row_id = tbl_row.attr('row_id');
+
+    $.post('/tempcancelOrder',{orderId:row_id},function(res){
+      if(res=='done'){
+        alert("Order Declined!!2");
+      }
+      else{
+        alert("Error!!");
+      }
+    })
+	});
+  $(document).on('click', '.btn_complete', function(event) 
+	{
+		event.preventDefault();
+		var tbl_row = $(this).closest('tr');
+    tbl_row.hide();
+
+		var row_id = tbl_row.attr('row_id');
+
+    $.post('/tempcompleteOrder',{orderId:row_id},function(res){
+      if(res=='done'){
+        alert("Order Completed!!");
+      }
+      else{
+        alert("Error!!");
+      }
+    })
+	});
+
+  })
+});
+
+  
+
+$(document).on('click', '.btn-declined', function(event) 
+{
+  event.preventDefault();
+
+  $("button").css("transform","translateY(0)");
+  $("button").css("background-color","grey");
+  $("button").css("color","black");
+
+  $(".btn-declined").css("transform","translateY(5px)");
+  $(".btn-declined").css("background-color","black");
+  $(".btn-declined").css("color","white");
+  document.getElementById("dynamicTable").innerHTML = "";
+  var tables;
+  $.post("/declined",function(res){
+    tables = res;
+    const tbl = document.createElement("table");
+    tbl.classList.add("table");
+    tbl.classList.add("table-hover");
+    tbl.classList.add("table-striped");
+
+    const tblHead = document.createElement("thead");
+
+    const headRow = document.createElement("tr");
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("#");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Name");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Mobile");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Product");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Quantity");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Amount");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Delivery Date");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    tblHead.appendChild(headRow);
+    tbl.appendChild(tblHead )
+
+    const tblBody = document.createElement("tbody");
+    
+    // creating all cells
+    for (let i = 0; i < tables.length; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+      row.setAttribute('row_id',tables[i].orderId);
+
+      var cell = document.createElement("th");
+      cell.setAttribute('scope','row');
+      var cellText = document.createTextNode(i+1);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].customerName);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].mobNumber);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].product);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].qty);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].amount);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].deliveryDate);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    
+    }
+
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    $(".apptable").append(tbl);
+
+    $("tr").addClass("text-center");
+
+  })
+});
+
+
+$(document).on('click', '.btn-completed', function(event) 
+{
+  event.preventDefault();
+
+
+  $("button").css("transform","translateY(0)");
+  $("button").css("background-color","grey");
+  $("button").css("color","black");
+
+
+  $(".btn-completed").css("transform","translateY(5px)");
+  $(".btn-completed").css("background-color","black");
+  $(".btn-completed").css("color","white");
+
+  document.getElementById("dynamicTable").innerHTML = "";
+  var tables;
+  $.post("/completed",function(res){
+    tables = res;
+    const tbl = document.createElement("table");
+    tbl.classList.add("table");
+    tbl.classList.add("table-hover");
+    tbl.classList.add("table-striped");
+
+    const tblHead = document.createElement("thead");
+
+    const headRow = document.createElement("tr");
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("#");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Name");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Mobile");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Product");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    var cellText = document.createTextNode("Quantity");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Amount");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    var cell = document.createElement("th");
+    cell.setAttribute('scope','col');
+    var cellText = document.createTextNode("Delivery Date");
+    cell.appendChild(cellText);
+    headRow.appendChild(cell);
+
+    tblHead.appendChild(headRow);
+    tbl.appendChild(tblHead )
+
+    const tblBody = document.createElement("tbody");
+    
+    // creating all cells
+    for (let i = 0; i < tables.length; i++) {
+      // creates a table row
+      const row = document.createElement("tr");
+      row.setAttribute('row_id',tables[i].orderId);
+
+      var cell = document.createElement("th");
+      cell.setAttribute('scope','row');
+      var cellText = document.createTextNode(i+1);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].customerName);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].mobNumber);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].product);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].qty);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].amount);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+      
+      cell = document.createElement("td");
+      cellText = document.createTextNode(tables[i].deliveryDate);
+      cell.appendChild(cellText);
+      row.appendChild(cell);
+    
+      // add the row to the end of the table body
+      tblBody.appendChild(row);
+    
+    }
+
+    // put the <tbody> in the <table>
+    tbl.appendChild(tblBody);
+    // appends <table> into <body>
+    $(".apptable").append(tbl);
+
+    $("tr").addClass("text-center");
+
+  })
+});
+
+
+
+</script>
+
+<div class="btndiv" style="width: 400px; ">
+  <button type="button" class="btn btn-outline-dark btn-pending">Pending</button>
+  <button type="button" class="btn btn-outline-dark btn-approved">Approved</button>
+  <button type="button" class="btn btn-outline-dark btn-declined" >Declined</button>
+  <button type="button" class="btn btn-outline-dark btn-completed" >Completed</button>
+  </div>
+  <div class="apptable" id="dynamicTable">
+    
+  </div>
+
+<%- include ('footer') %>
