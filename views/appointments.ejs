@@ -15,34 +15,37 @@
           </tr>
         </thead>
         <tbody>
-          <% for(var i=0; i<tables.length ; i++){  %>
-            <tr row_id = "<%= tables[i].appointmentId  %> ">
-              <th scope="row"><%= i+1 %></th>
-              <td>
-                  <%= tables[i].custName %>
-              </td>
-              <td>
-                  <%= tables[i].mobNumber %>
-              </td>
-              <td>
-                  <%= tables[i].serviceName %>
-              </td>
-              <td>
-                  <%= tables[i].startTime %>
-              </td>
-              <td>
-                <%= tables[i].date %>
-              </td>
-              <td>
-                  <%= tables[i].price %>
-              </td>
-              <td>
-                  <%= tables[i].isPaid %>
-              </td>
-              <td>
-                <span class="btn_complete"> <a class="btn btn-link" > Completed</a> </span> 
-              </td>
-            </tr>
+          <% if(tables!=null){ %>
+            <% for(var i=0; i<tables.length ; i++){  %>
+              <tr row_id = "<%= tables[i].appointmentId  %> ">
+                <th scope="row"><%= i+1 %></th>
+                <td>
+                    <%= tables[i].custName %>
+                </td>
+                <td>
+                    <%= tables[i].mobNumber %>
+                </td>
+                <td>
+                    <%= tables[i].serviceName %>
+                </td>
+                <td>
+                    <%= tables[i].startTime %>
+                </td>
+                <td>
+                  <%= tables[i].date %>
+                </td>
+                <td>
+                    <%= tables[i].price %>
+                </td>
+                <td>
+                    <%= tables[i].isPaid %>
+                </td>
+                <td>
+                  <span class="btn_complete"> <a class="btn btn-link" > Completed</a> </span> 
+                </td>
+              </tr>
+            <% } %>
+
           <% } %>
         </tbody>
         

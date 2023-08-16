@@ -1,1 +1,4 @@
 node_modules/
+firebase-debug.txt
+package.json
+package-lock.json
